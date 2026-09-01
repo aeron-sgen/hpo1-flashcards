@@ -6,12 +6,14 @@
 <title>HPO I Interview Flashcards</title>
 <style>
 :root{
-  --ink:#123332; --ink-soft:#4c6664; --ink-faint:#7d918f;
-  --paper:#f2f6f4; --card:#ffffff;
-  --teal:#0f6e56; --teal-deep:#085041; --teal-tint:#dff0ea;
-  --gold-tint:#fbeed7; --gold-deep:#8a5a12;
-  --blue-tint:#e3ebf7; --blue-deep:#1f4e8c;
-  --line:#d8e2df; --radius:18px;
+  /* Low-glare study palette: warm off-white card instead of pure white,
+     desaturated sage accents. All text pairs meet WCAG AA (>=4.5:1). */
+  --ink:#26302c; --ink-soft:#4f5b56; --ink-faint:#616b66;
+  --paper:#e8ebe4; --card:#f6f5f0;
+  --teal:#3a7361; --teal-deep:#2a564a; --teal-tint:#dde8e1;
+  --gold-tint:#f3e9d6; --gold-deep:#785c2c;
+  --blue-tint:#e8eef5; --blue-deep:#3d5c7d;
+  --line:#d3d8d0; --radius:18px;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{
@@ -36,14 +38,14 @@ details.intro[open] summary::after{content:"\2212";}
 .intro-body{padding:0 16px 16px;font-family:Georgia,serif;font-style:italic;font-size:14px;line-height:1.75;}
 .intro-body p{margin-bottom:10px;}
 
-.seg{display:flex;background:#e4ecea;border-radius:999px;padding:4px;margin:0 0 16px;}
+.seg{display:flex;background:#dfe3da;border-radius:999px;padding:4px;margin:0 0 16px;}
 .seg button+button{margin-left:3px;}
 .seg button{touch-action:manipulation;
   flex:1;border:none;background:transparent;border-radius:999px;font:inherit;
   font-size:12.5px;font-weight:600;color:var(--ink-soft);padding:10px 2px;min-height:40px;cursor:pointer;
   transition:background .2s,color .2s;
 }
-.seg button.on{background:var(--card);color:var(--teal-deep);box-shadow:0 1px 3px rgba(18,51,50,.12);}
+.seg button.on{background:var(--card);color:var(--teal-deep);box-shadow:0 1px 3px rgba(38,48,44,.10);}
 
 .stage{perspective:1400px;}
 .stage:not(.flipped) .face.back{pointer-events:none;}
@@ -53,7 +55,7 @@ details.intro[open] summary::after{content:"\2212";}
 .face{
   backface-visibility:hidden;-webkit-backface-visibility:hidden;
   background:var(--card);border-radius:var(--radius);border:1px solid var(--line);
-  box-shadow:0 8px 24px rgba(18,51,50,.08);padding:22px;min-height:360px;
+  box-shadow:0 8px 24px rgba(38,48,44,.07);padding:22px;min-height:360px;
   display:flex;flex-direction:column;
 }
 .face.back{position:absolute;top:0;right:0;bottom:0;left:0;transform:rotateY(180deg);overflow-y:auto;}
@@ -77,7 +79,7 @@ details.intro[open] summary::after{content:"\2212";}
   font-size:15px;font-weight:600;color:var(--ink);min-height:50px;cursor:pointer;
   transition:background .15s,transform .1s;display:flex;align-items:center;justify-content:center;
 }
-.controls button:active{transform:scale(.97);background:#eef4f2;}
+.controls button:active{transform:scale(.97);background:#eceae3;}
 .controls .arrow{width:56px;flex:none;}
 .controls .grow{flex:1;}
 .controls .grow svg{margin-right:8px;}
@@ -86,7 +88,7 @@ details.intro[open] summary::after{content:"\2212";}
 .meter{display:flex;align-items:center;justify-content:center;margin-top:16px;}
 .meter>*+*{margin-left:12px;}
 .count{font-size:13px;font-weight:700;color:var(--ink-soft);font-variant-numeric:tabular-nums;}
-.bar{flex:1;max-width:200px;height:6px;background:#e0e9e6;border-radius:3px;overflow:hidden;}
+.bar{flex:1;max-width:200px;height:6px;background:#dbdfd6;border-radius:3px;overflow:hidden;}
 .bar i{display:block;height:100%;width:0;background:var(--teal);border-radius:3px;transition:width .3s;}
 footer{margin-top:26px;text-align:center;font-size:12px;color:var(--ink-faint);line-height:1.6;}
 @media (prefers-reduced-motion:reduce){.cardwrap{transition:none;}.bar i{transition:none;}}
