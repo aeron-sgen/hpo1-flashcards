@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HPO I Interview Flashcards</title>
+<style>
+:root{
+  --ink:#123332; --ink-soft:#4c6664; --ink-faint:#7d918f;
+  --paper:#f2f6f4; --card:#ffffff;
+  --teal:#0f6e56; --teal-deep:#085041; --teal-tint:#dff0ea;
+  --gold-tint:#fbeed7; --gold-deep:#8a5a12;
+  --blue-tint:#e3ebf7; --blue-deep:#1f4e8c;
+  --line:#d8e2df; --radius:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--paper);color:var(--ink);min-height:100vh;display:flex;justify-content:center;
+}
+.app{width:100%;max-width:520px;padding:20px 16px 40px;}
+header{margin:8px 0 16px;}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);font-weight:600;margin-bottom:6px;}
+h1{font-size:23px;font-weight:700;line-height:1.25;letter-spacing:-.01em;}
+h1 span{color:var(--teal);}
+.sub{font-size:14px;color:var(--ink-soft);margin-top:6px;line-height:1.5;}
+
+details.intro{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:16px 0;overflow:hidden;}
+details.intro summary{
+  list-style:none;cursor:pointer;padding:14px 16px;font-weight:700;font-size:14px;
+  color:var(--teal-deep);display:flex;align-items:center;justify-content:space-between;
+}
+details.intro summary::-webkit-details-marker{display:none;}
+details.intro summary::after{content:"+";font-size:20px;font-weight:400;color:var(--ink-faint);}
+details.intro[open] summary::after{content:"\2212";}
+.intro-body{padding:0 16px 16px;font-family:Georgia,serif;font-style:italic;font-size:14px;line-height:1.75;}
+.intro-body p{margin-bottom:10px;}
+
+.seg{display:flex;background:#e4ecea;border-radius:999px;padding:4px;gap:3px;margin:0 0 16px;}
+.seg button{
+  flex:1;border:none;background:transparent;border-radius:999px;font:inherit;
+  font-size:12.5px;font-weight:600;color:var(--ink-soft);padding:10px 2px;min-height:40px;cursor:pointer;
+  transition:background .2s,color .2s;
+}
+.seg button.on{background:var(--card);color:var(--teal-deep);box-shadow:0 1px 3px rgba(18,51,50,.12);}
+
+.stage{perspective:1400px;}
+.cardwrap{position:relative;transition:transform .5s cubic-bezier(.4,.1,.2,1);transform-style:preserve-3d;cursor:pointer;}
+.stage.flipped .cardwrap{transform:rotateY(180deg);}
+.face{
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  background:var(--card);border-radius:var(--radius);border:1px solid var(--line);
+  box-shadow:0 8px 24px rgba(18,51,50,.08);padding:22px;min-height:360px;
+  display:flex;flex-direction:column;
+}
+.face.back{position:absolute;inset:0;transform:rotateY(180deg);overflow-y:auto;}
+.face-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex:none;}
+.pill{font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;}
+.pill.b{background:var(--blue-tint);color:var(--blue-deep);}
+.pill.c{background:var(--teal-tint);color:var(--teal-deep);}
+.pill.l{background:var(--gold-tint);color:var(--gold-deep);}
+.sideword{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;}
+.qtext{font-size:17px;line-height:1.55;font-weight:600;flex:1;display:flex;align-items:center;}
+.atext{font-family:Georgia,"Times New Roman",serif;font-style:italic;font-size:14px;line-height:1.7;color:var(--ink);flex:1;}
+.atext p{margin-bottom:10px;}
+.keys{font-size:13px;line-height:1.5;color:var(--teal-deep);background:var(--teal-tint);border-radius:10px;padding:9px 13px;margin-top:12px;font-weight:600;flex:none;}
+.tip{font-size:12.5px;line-height:1.55;color:var(--gold-deep);background:var(--gold-tint);border-radius:10px;padding:9px 13px;margin-top:12px;flex:none;}
+.hint{text-align:center;font-size:13px;color:var(--ink-faint);margin-top:14px;flex:none;}
+
+.controls{display:flex;gap:10px;margin-top:16px;}
+.controls button{
+  border:1px solid var(--line);background:var(--card);border-radius:14px;font:inherit;
+  font-size:15px;font-weight:600;color:var(--ink);min-height:50px;cursor:pointer;
+  transition:background .15s,transform .1s;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.controls button:active{transform:scale(.97);background:#eef4f2;}
+.controls .arrow{width:56px;flex:none;}
+.controls .grow{flex:1;}
+.controls svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+.meter{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:16px;}
+.count{font-size:13px;font-weight:700;color:var(--ink-soft);font-variant-numeric:tabular-nums;}
+.bar{flex:1;max-width:200px;height:6px;background:#e0e9e6;border-radius:3px;overflow:hidden;}
+.bar i{display:block;height:100%;width:0;background:var(--teal);border-radius:3px;transition:width .3s;}
+footer{margin-top:26px;text-align:center;font-size:12px;color:var(--ink-faint);line-height:1.6;}
+@media (prefers-reduced-motion:reduce){.cardwrap{transition:none;}.bar i{transition:none;}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="eyebrow">Interview preparation</div>
+    <h1>HPO I reviewer, <span>flashcard edition</span></h1>
+    <p class="sub">28 behavioral + 21 situational Q&amp;As. Tap a card to flip. Say your answer out loud before revealing.</p>
+  </header>
+
+  <details class="intro">
+    <summary>Self-introduction (60&ndash;90 sec) &mdash; read this first</summary>
+    <div class="intro-body">
+      <p>&ldquo;Good morning, sir/ma&rsquo;am. I&rsquo;m Janie Joy Abutal, a BS Psychology graduate of Central Mindanao University and a Registered Psychometrician since August 2024. I&rsquo;m from Bukidnon, and it&rsquo;s an honor to be considered for this position.</p>
+      <p>My most meaningful experiences have been with people. At Journey Homes Wellness Center, I supported clients in recovery &mdash; building trust without judgment and documenting their behavioral progress for the clinical team. With the Red Cross Youth Council, I served in community health and disaster preparedness campaigns. And in my HR internship at SEDA Centrio, I handled confidential records for over a hundred employees and built a digital filing system that&rsquo;s still a point of pride for me.</p>
+      <p>After my licensure, I worked remotely &mdash; first in market research, then as a virtual assistant &mdash; and I did well in both. But I realized that remote work, comfortable as it was, didn&rsquo;t fulfill me. I wasn&rsquo;t connected to anyone; nothing I did reached an actual person. So I resigned from the research role and used the VA work to sustain myself while deliberately searching for the work my heart was actually craving: helping people in need, face to face.</p>
+      <p>That search led me here. This position brings together everything I have &mdash; my psychology training, my documentation and coordination skills, and my experience with clients in recovery &mdash; in service of communities in our own province. I&rsquo;m not here by accident, sir/ma&rsquo;am. I&rsquo;m here on purpose.&rdquo;</p>
+    </div>
+  </details>
+
+  <div class="seg" role="tablist" aria-label="Filter deck">
+    <button id="fAll" class="on">All &middot; 49</button>
+    <button id="fB">Behavioral &middot; 28</button>
+    <button id="fC">Core &middot; 5</button>
+    <button id="fL">LGU &middot; 16</button>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="cardwrap" id="cardwrap" role="button" tabindex="0" aria-label="Flashcard, tap or press enter to flip">
+      <div class="face front">
+        <div class="face-top">
+          <span class="pill b" id="pillF"></span>
+          <span class="sideword">Question</span>
+        </div>
+        <div class="qtext" id="qtext"></div>
+        <div class="hint">Tap to reveal the answer</div>
+      </div>
+      <div class="face back">
+        <div class="face-top">
+          <span class="pill b" id="pillB"></span>
+          <span class="sideword">Answer</span>
+        </div>
+        <div class="atext" id="atext"></div>
+        <div class="keys" id="keys" style="display:none;"></div>
+        <div class="tip" id="tip" style="display:none;"></div>
+        <div class="hint">Tap to see the question</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="arrow" id="prev" aria-label="Previous card">
+      <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+    </button>
+    <button class="grow" id="shuffle">
+      <svg viewBox="0 0 24 24"><path d="M18 4l3 3-3 3"/><path d="M18 20l3-3-3-3"/><path d="M3 7h3a5 5 0 0 1 5 5 5 5 0 0 0 5 5h5"/><path d="M21 7h-5a4.98 4.98 0 0 0-3 1"/><path d="M3 17h3a4.98 4.98 0 0 0 3-1"/></svg>
+      Shuffle
+    </button>
+    <button class="arrow" id="next" aria-label="Next card">
+      <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+  </div>
+
+  <div class="meter">
+    <span class="count" id="count"></span>
+    <div class="bar"><i id="fill"></i></div>
+  </div>
+
+  <footer>The situational spine: assess &rarr; coordinate &rarr; document &rarr; monitor &rarr; follow up.<br>Works offline &mdash; save this file and study anywhere. Kaya mo 'yan!</footer>
+</div>
+
+<script>
+// t: b = behavioral, c = core situational, l = barangay/LGU
+// a: array of paragraphs; k: key points; n: tip note
+const cards=[
+{t:"b",q:"Tell us about a time you handled confidential information.",a:["At SEDA Centrio Hotel, I was assigned to the HR department handling employee files for more than a hundred staff members. I organized both physical and digital records, and I developed a digital file management system that reduced retrieval time while keeping access limited to authorized personnel. I made sure files were never left out, and requests for records went through proper channels. That experience taught me to treat confidentiality as a habit, not just a rule \u2014 which I know is essential in health work under the Data Privacy Act."]},
+{t:"b",q:"Describe a time you worked with a difficult or vulnerable client.",a:["During my internship at Journey Homes Wellness Center, I worked with clients in recovery who were sometimes withdrawn or hesitant to engage. My task was to build trust and support their activities without bias. I approached them consistently and respectfully, listened more than I talked, and never forced participation. Over time, some clients who initially kept to themselves began joining group activities. I documented these behavioral improvements and shared them with the clinical team, which helped them adjust each client\u2019s program. It showed me that patience and respect for a client\u2019s pace are interventions in themselves."]},
+{t:"b",q:"Give an example of a time you led a team.",a:["In my team-building leadership role at CMU, I led a group where members had different personalities and some existing conflicts. I focused on creating open communication first \u2014 making sure everyone felt safe to share \u2014 before pushing toward our goals. When conflicts came up, I addressed them directly but with empathy, and I made sure quieter members were heard. The team finished cohesive and motivated. I believe the same approach applies to coordinating with health workers: people cooperate when they feel valued."]},
+{t:"b",q:"Tell us about a time you had to learn something completely new.",a:["When I worked as a livestream evaluator, I had no prior background in engagement metrics or performance analytics. I studied the platform, learned to run statistical analysis on viewer data, identified trends, and recommended content changes that improved retention. It proved to me that I can pick up unfamiliar systems quickly \u2014 which I expect to do again with DOH program guidelines, reporting tools, and monitoring frameworks."]},
+{t:"b",q:"Describe a time you volunteered or served the community.",a:["With the Red Cross Youth Council, I volunteered during the pandemic period, helping organize campaigns on disaster preparedness, health crises, and social welfare. I learned how to communicate health information in ways communities actually understand and act on, and how to coordinate with fellow volunteers under limited resources. That experience is a big part of why I want to work in public health programs."]},
+{t:"b",q:"Tell us about a time you had to document or track something accurately.",a:["Two examples: at Journey Homes, I documented observable client behaviors daily so the clinical team had reliable progress records \u2014 I learned to write what I observed, not what I assumed. And at SEDA, accurate filing directly affected compliance. In both cases I saw that good documentation isn\u2019t clerical work; it\u2019s what makes good decisions possible. As a psychometrician, accuracy in recording and interpreting data is also central to my training."]},
+{t:"b",q:"Describe a time you overcame a personal challenge to reach a goal.",a:["I finished my degree as a scholar of the Sugar Industry Foundation, which meant I had to maintain my standing throughout college while helping ease the financial load on my family. There were semesters when it was difficult, but I stayed consistent, graduated, and then passed the Psychometrician licensure exam on my first take in 2024. It taught me discipline and follow-through \u2014 I finish what I start."]},
+{t:"b",q:"Tell us about a time you received feedback or criticism. How did you respond?",a:["During my Journey Homes internship, the clinical team once pointed out that my early progress notes included too much interpretation rather than plain observation. Instead of taking it personally, I asked for examples of well-written notes, adjusted my documentation style, and my later reports were used as reference by co-interns. I see feedback as free training."]},
+{t:"b",q:"Why should we hire you over other applicants? / What can you contribute?",a:["Three things. First, I\u2019m a Registered Psychometrician \u2014 I bring formal training in assessment, behavior, and measurement, which fits program monitoring and client evaluation. Second, I have direct experience in a wellness and recovery setting, so the clients these programs serve are not abstract to me. And third, I\u2019m from Bukidnon \u2014 I understand the communities here, I speak the language of our barangays, and I intend to stay and serve here, not treat this as a stepping stone elsewhere."]},
+{t:"b",q:"Where do you see yourself in five years?",a:["Still in public service, ideally grown within DOH \u2014 having mastered program implementation as an HPO I, contributing to training and capacity-building for health workers, and possibly pursuing further studies in public health or psychology to serve the programs better."]},
+{t:"b",q:"What is your greatest strength?",a:["Adaptability backed by documentation discipline. I\u2019ve worked in very different settings \u2014 a wellness center, a hotel HR office, a remote analytics job \u2014 and in each one I learned the system quickly and left something better than I found it, like the digital filing system at SEDA. And wherever I work, I keep accurate records, which I believe is the backbone of any government health program."]},
+{t:"b",q:"What is your greatest weakness?",a:["Early on, I tended to over-prepare \u2014 I wanted every detail perfect before submitting or speaking. I\u2019ve learned to balance that by setting internal deadlines and asking for feedback earlier instead of polishing alone. The upside is that thoroughness never left me; I just manage it better now."],n:"Pick a real but non-fatal weakness and always end with the changed behavior."},
+{t:"b",q:"Tell us about a time you took initiative without being told.",a:["At SEDA Centrio, no one asked me to build a digital employee file system \u2014 my task was just to organize physical files. But I noticed how much time staff lost searching for documents, so I proposed and implemented a digital version. Retrieval time dropped noticeably and it improved compliance with company record policies. I don\u2019t wait for problems to be assigned; if I can fix something within my authority, I do."]},
+{t:"b",q:"Describe a time you had to communicate information to people effectively.",a:["Two examples. At SEDA, I redesigned the office bulletin boards and produced fire safety videos, translating dry policy into something employees would actually stop and watch. And with the Red Cross Youth Council, I helped run awareness campaigns on disaster preparedness and health issues. Both taught me the same lesson: information only counts if the audience understands and acts on it \u2014 which is exactly the challenge in community health education."]},
+{t:"b",q:"Tell us about a time you worked with people very different from you.",a:["At Journey Homes, I worked alongside co-interns, clinical staff, and clients from very different backgrounds and life situations. My role required suspending judgment completely \u2014 clients needed to feel valued regardless of their history. I collaborated with co-interns on activities even when our styles differed, by focusing on the clients\u2019 needs rather than our preferences. I\u2019d bring that same posture to working with BHWs, LGU staff, and clients across Bukidnon\u2019s communities."]},
+{t:"b",q:"How do you handle stress and pressure?",a:["I organize it. When I was completing my degree as a SIFI scholar, reviewing for the board exam, and doing internships, what kept me steady was breaking everything into scheduled, smaller tasks and protecting time for rest. I passed the licensure exam while managing all of that. Under work pressure I do the same: list, prioritize by urgency and impact, and communicate early with my supervisor if timelines are at risk \u2014 rather than staying silent and missing a deadline."]},
+{t:"b",q:"Tell us about a time you supported a leader or team behind the scenes.",a:["As Student Government Secretary, my job was to make everyone else\u2019s job easier \u2014 recording minutes, keeping records accessible, distributing updates, and following up on tasks so nothing fell through the cracks. Not every contribution is visible, and I\u2019m comfortable being the person who keeps the system running. In program work, that\u2019s the coordination and reporting function \u2014 and I genuinely like that work."]},
+{t:"b",q:"Why do you want to work in government rather than the private sector?",a:["I\u2019ve seen both. My private-sector experience paid me to improve viewer retention; my Red Cross and Journey Homes experience let me improve someone\u2019s actual life. The second one is what I want to wake up for. Government health programs reach people who can\u2019t afford private services \u2014 especially in the far barangays of our province \u2014 and being part of that, here in Bukidnon where I\u2019m from, is more meaningful to me than a higher private salary elsewhere."]},
+{t:"b",q:"Tell us about a conflict with a teammate. How did you resolve it?",a:["During our team-building leadership activity at CMU, two members had an existing disagreement that was affecting the whole group. As team leader, I spoke with each of them privately first to understand their sides, then brought them together to focus on what we shared \u2014 the team goal \u2014 rather than who was right. I set a norm that concerns get raised openly, not through side comments. The tension eased and we finished the activity as a functioning team. My principle is: address conflict early, privately first, and always toward the work."]},
+{t:"b",q:"How do you ensure accuracy when handling data or reports?",a:["Three habits from my training. First, I record at the time of observation, not from memory \u2014 something I practiced daily at Journey Homes. Second, I separate observation from interpretation, which is core to psychometric practice. Third, I double-check against source documents before submitting, which was routine in HR filing at SEDA. If I inherit data I didn\u2019t collect, I verify it against original records before using it \u2014 I don\u2019t assume."]},
+{t:"b",q:"What do you know about DOH programs? / What is the role of a Health Program Officer?",a:["From my understanding, a Health Program Officer supports the implementation, coordination, monitoring, and reporting of DOH programs at the field level \u2014 working with the LGU, RHUs, and barangay health workers to make sure programs follow guidelines and actually reach the target population. Given the office I\u2019m applying under, I understand the work involves treatment and rehabilitation support, which connects directly with my psychology background and my wellness center experience. I\u2019m also ready to be trained on the specific program guidelines, because I know each program has its own protocols and reporting requirements."],n:"If you know the exact division or program this position sits under, name it \u2014 naming the real program impresses panels."},
+{t:"b",q:"Are you willing to be assigned to remote areas or do field work?",a:["Yes. I\u2019m from Bukidnon and I know that the clients who most need these programs are often in the farthest barangays. Field work is not a burden to me \u2014 it\u2019s the point of the job."]},
+{t:"b",q:"Do you have any questions for us?",a:["May I ask what the immediate priorities would be for the person hired in this position in their first few months? \u2014 or \u2014 What qualities have made past program officers successful in this office?"],n:"Always ask at least one question. Never ask about salary or leave credits at this stage."},
+{t:"b",q:"Why did you leave your previous work? / Why the shift from remote work to public health?",a:["After passing my board exam, I worked part-time remotely as a livestream evaluator for a US-based company. On paper it was a good setup \u2014 flexible, comfortable, and I was doing well at it. I thought that arrangement would satisfy me. But over time I realized something was missing: I was analyzing numbers on a screen, but I wasn\u2019t connected to anyone. Nothing I did reached an actual person.","It made me look back at where I\u2019d felt most fulfilled \u2014 and it was at Journey Homes, sitting with clients in recovery, and with the Red Cross, doing health campaigns in the community. That\u2019s when I understood that my heart is really in helping people directly. So instead of continuing down the remote-work path, I chose to pursue public health service here in Bukidnon. I\u2019m not applying for this position because I couldn\u2019t find other work \u2014 I\u2019m applying because I already tried the other kind of work, and this is the one I actually want."],n:"Slow down on \u201Cit didn\u2019t fulfill me\u201D \u2014 say it plainly, like a fact you\u2019ve made peace with."},
+{t:"b",q:"How do we know you\u2019ll stay? Government work is demanding and may pay less than online jobs.",a:["That\u2019s a fair question, sir/ma\u2019am, and my own experience is my answer. I already had the remote job \u2014 the kind people leave government work for. I experienced its comfort and flexibility firsthand, and I still found myself unfulfilled, because I wasn\u2019t connected to people and I wasn\u2019t helping anyone in need. I didn\u2019t leave that path because it failed me; I left because it wasn\u2019t the life I want. So the usual reason people resign from this work \u2014 the pull of online jobs \u2014 has no pull on me anymore. I\u2019ve already been there. What I\u2019m looking for is exactly what this position offers: real people, real communities, real impact here in our province."]},
+{t:"b",q:"Can you walk us through your work history? / What have you been doing since graduation?",a:["After graduating and passing my Psychometrician licensure in August 2024, I first worked remotely as a livestream evaluator doing market research and engagement analysis for a US-based company. I did well in it, but I realized that kind of work \u2014 comfortable as it was \u2014 didn\u2019t fulfill me, so I made the decision to resign.","While actively searching for a role aligned with my real calling, I took on remote work as a virtual assistant supporting an executive assistant. That role sharpened skills I know this position needs: managing schedules and correspondence, preparing documents, coordinating between different people, and handling tasks with confidentiality and accuracy \u2014 essentially, keeping someone else\u2019s operations running smoothly.","But I was intentional the whole time: those remote jobs sustained me while I searched for this \u2014 work in public health where I\u2019m connected to people and helping those in need. So my path isn\u2019t scattered; every role either built a skill I\u2019ll use here or confirmed the direction I\u2019m now choosing."]},
+{t:"b",q:"Your work experiences seem short and varied. Are you someone who jumps from job to job?",a:["I understand why it may look that way, sir/ma\u2019am, but there\u2019s a clear thread. The remote roles were transitional by design \u2014 I took them to support myself while searching for work aligned with my profession and my calling. I was honest with myself early: market research paid well but left me disconnected from people, so rather than stay comfortable in the wrong seat for years, I resigned and kept moving toward the right one. The virtual assistant work kept my coordination and documentation skills sharp in the meantime.","What I don\u2019t jump from is commitment to people \u2014 my client work at Journey Homes, my Red Cross volunteering, my scholarship obligations, I saw all of those through fully. Once I\u2019m in work that matters to me \u2014 and this is that work \u2014 I stay. That\u2019s precisely why I was careful about which job to commit to."]},
+{t:"b",q:"What skills from being a virtual assistant would transfer to this position?",a:["More than people might expect. As a VA supporting an executive assistant, my job was coordination \u2014 tracking tasks across different people, managing communications, preparing and organizing documents, and making sure nothing was dropped. A Health Program Officer does a similar function at program level: coordinating between the LGU, RHUs, and barangay health workers, keeping records and reports accurate, and following up so activities actually happen on schedule. I also worked with full confidentiality on someone else\u2019s sensitive information, which is the same discipline the Data Privacy Act requires in health records. The difference is that here, the coordination serves patients and communities \u2014 which is the part I\u2019ve been missing."]},
+{t:"b",q:"If pressed: \u201CBut you have no government experience.\u201D",a:["That\u2019s true, sir/ma\u2019am \u2014 and it means I come with no bad habits to unlearn. What I do have is the license, the documentation discipline, and direct experience with the client population. The government processes, I will learn quickly and follow faithfully \u2014 the same way I learned every system in my previous roles."],n:"Don\u2019t get defensive \u2014 deliver this calmly and with a slight smile."},
+{t:"c",q:"Client keeps relapsing / has limited knowledge about relapse prevention. What would you do?",a:["I would first assess the client\u2019s situation, including their triggers, level of knowledge, and reasons for relapse. Then, I would work with the client and the treatment team to set realistic long-term goals and provide appropriate education on relapse prevention and the effects of substance use. I would also coordinate with the LGU or appropriate health workers for follow-up, monitoring, and continued support."],k:"Assessment \u00b7 individualized care \u00b7 education \u00b7 teamwork \u00b7 follow-up"},
+{t:"c",q:"Incorrect or incomplete information in a patient\u2019s records. What would you do?",a:["I would first verify the information using the appropriate records and coordinate with the concerned health personnel to confirm the correct details. Once verified, I would have the necessary corrections properly documented according to the established procedure. I would also ensure that the information remains confidential and is only accessed or shared with authorized personnel, in accordance with the Data Privacy Act and relevant health protocols."],k:"Verification \u00b7 documentation \u00b7 confidentiality \u00b7 data privacy"},
+{t:"c",q:"LGU or NGO provides training for clients \u2014 how will you make sure they benefit?",a:["I would first assess whether the training is appropriate to the clients\u2019 needs and level of understanding. I would coordinate with the LGU, NGO, and health team to ensure that the training is accessible and relevant. After the training, I would evaluate participation, learning, and how the clients apply what they learned, then use the feedback to improve future activities."],k:"Needs assessment \u00b7 LGU/NGO coordination \u00b7 evaluation"},
+{t:"c",q:"New rehabilitation program is implemented, but staff are unfamiliar and incorrectly implement it. What would you do?",a:["I would first identify where the incorrect implementation is happening and review the official program guidelines. I would coordinate with the concerned staff and provide clarification, orientation, or technical assistance. I would then monitor the implementation regularly and address any gaps immediately to ensure that the program is properly and consistently implemented."],k:"Guidelines \u00b7 capacity building \u00b7 technical assistance \u00b7 monitoring"},
+{t:"c",q:"Many interventions from different health sectors are recommended for one client \u2014 how will you determine the best intervention?",a:["I would first assess the client\u2019s needs, condition, and priorities. Then, I would discuss the different recommendations with the multidisciplinary team and consider their effectiveness, appropriateness, available resources, and the client\u2019s preferences. We would agree on an integrated and realistic intervention, then monitor the client\u2019s progress and adjust the plan when necessary."],k:"Client-centered \u00b7 multidisciplinary \u00b7 evidence-based \u00b7 monitoring"},
+{t:"l",q:"A client from a barangay refuses to participate in a rehabilitation program. What would you do?",a:["I would first identify the reason for the client\u2019s refusal and assess any barriers that may be affecting their participation. I would explain the program and its benefits in a way that is understandable to the client, while respecting their autonomy. I would also coordinate with the appropriate LGU or healthcare team for additional support and follow-up."]},
+{t:"l",q:"You notice that many clients referred by the barangay are not completing the program. What would you do?",a:["I would review the program records and identify possible reasons for the low completion rate. I would coordinate with the barangay health workers, LGU, and treatment team to understand the barriers and develop appropriate interventions. I would then monitor the results to determine if participation improves."]},
+{t:"l",q:"A Barangay Health Worker gives you incomplete information about a client. What would you do?",a:["I would verify the information through the appropriate records and coordinate with the concerned health personnel or BHW. I would make sure that corrections are properly documented and that only authorized individuals have access to the client\u2019s information, in accordance with confidentiality and data privacy policies."]},
+{t:"l",q:"An LGU asks you to implement a health program, but their available resources are limited. What would you do?",a:["I would first assess the available resources and identify the most critical needs of the community. I would coordinate with the LGU, health facility, barangay, and possible partner organizations to maximize available resources. I would prioritize interventions based on the needs of the target population and the program objectives."]},
+{t:"l",q:"A new DOH program is introduced, but some LGU staff are unfamiliar with the guidelines. What would you do?",a:["I would review the official program guidelines and coordinate with the concerned personnel to clarify their roles and responsibilities. I would support orientation or capacity-building activities and provide technical assistance when needed. I would also monitor implementation to ensure that the program is being carried out according to DOH guidelines."]},
+{t:"l",q:"You are assigned to monitor a health program in several barangays. How would you ensure proper implementation?",a:["I would establish clear indicators and monitoring schedules based on the program guidelines. I would coordinate with the LGU and barangay health workers, review reports and records, and conduct monitoring visits when necessary. Any gaps identified would be discussed with the concerned team and addressed through appropriate corrective actions."]},
+{t:"l",q:"An NGO offers a training program for your clients. How would you determine if it is appropriate?",a:["I would assess whether the training is aligned with the needs of the target clients and the objectives of the health program. I would coordinate with the NGO and relevant LGU or health personnel, ensure that the content is appropriate, and evaluate the clients\u2019 participation and learning after the training."]},
+{t:"l",q:"You discover that a program report submitted by an LGU contains inconsistent data. What would you do?",a:["I would verify the data using the original records and coordinate with the person responsible for the report. I would clarify and correct the discrepancies following the proper reporting procedures. I would also identify why the error occurred and provide guidance to prevent similar errors in future reports."]},
+{t:"l",q:"You have several health programs and activities happening at the same time. How would you prioritize your work?",a:["I would prioritize based on urgency, public health impact, program deadlines, and the needs of the target population. I would organize my tasks and coordinate with my supervisor and team to ensure that responsibilities are properly delegated and that critical activities are completed on time."]},
+{t:"l",q:"A client from a remote barangay has difficulty accessing healthcare services. What would you do?",a:["I would identify the specific barriers, such as transportation, cost, distance, or lack of information. I would coordinate with the LGU, barangay health workers, and appropriate health facilities to facilitate referral or bring appropriate services closer to the client when possible. I would also ensure proper follow-up."]},
+{t:"l",q:"A client\u2019s family asks you about the client\u2019s condition, but you are not authorized to disclose the information. What would you do?",a:["I would respectfully explain that I cannot disclose confidential health information without proper authorization or consent, except when disclosure is required under applicable laws or protocols. I would protect the client\u2019s privacy while directing the family to the appropriate authorized personnel for concerns they may legally discuss."]},
+{t:"l",q:"You are asked to implement an intervention, but you believe another approach would better address the community\u2019s needs. What would you do?",a:["I would first review the available data, program guidelines, and evidence supporting the proposed intervention. I would respectfully present my assessment to my supervisor and team and discuss possible alternatives. I would ultimately follow the approved program direction while ensuring that concerns are properly communicated."]},
+{t:"l",q:"What if the barangay officials are not cooperating with the health program?",a:["I would first communicate with them to understand the reason for the lack of cooperation. I would explain the objectives and benefits of the program to the community and clarify their role. If the issue continues, I would coordinate with my supervisor and the appropriate LGU offices for proper intervention."]},
+{t:"l",q:"What if a client complains that they are not receiving enough assistance from the program?",a:["I would listen to the client\u2019s concern and assess their situation based on the program\u2019s guidelines and available services. I would explain what assistance the program can provide and coordinate with the appropriate team or referral facility for additional support when necessary."]},
+{t:"l",q:"What if your supervisor gives you a task that you have never done before?",a:["I would clarify the expected output and review the relevant guidelines or procedures. If necessary, I would ask for guidance from my supervisor or a more experienced colleague. I would make sure I understand the process before proceeding and would take responsibility for completing the task properly."]},
+{t:"l",q:"What if you have conflicting information from the RHU, barangay, and health facility?",a:["I would not immediately assume which information is correct. I would verify the information using official records and coordinate with the concerned personnel. Once verified, I would properly document the corrected information and use the validated data for reporting and decision-making."]}
+];
+
+const LABEL={b:"Behavioral",c:"Core scenario",l:"Barangay / LGU"};
+let deck=cards.slice(),idx=0;
+const $=id=>document.getElementById(id);
+const stage=$("stage");
+
+function esc(s){const d=document.createElement("div");d.textContent=s;return d.innerHTML;}
+function setFilter(f,btn){
+  deck=f==="all"?cards.slice():cards.filter(c=>c.t===f);
+  idx=0;
+  document.querySelectorAll(".seg button").forEach(b=>b.classList.remove("on"));
+  btn.classList.add("on");
+  stage.classList.remove("flipped");
+  render();
+}
+function render(){
+  const c=deck[idx];
+  ["pillF","pillB"].forEach(id=>{
+    const p=$(id);
+    p.textContent=LABEL[c.t];
+    p.className="pill "+c.t;
+  });
+  $("qtext").textContent=c.q;
+  const paras=c.a.map(esc);
+  paras[0]="\u201C"+paras[0];
+  paras[paras.length-1]=paras[paras.length-1]+"\u201D";
+  $("atext").innerHTML=paras.map(p=>"<p>"+p+"</p>").join("");
+  if(c.k){$("keys").style.display="block";$("keys").textContent=c.k;}
+  else{$("keys").style.display="none";}
+  if(c.n){$("tip").style.display="block";$("tip").textContent="TIP: "+c.n;}
+  else{$("tip").style.display="none";}
+  $("count").textContent=(idx+1)+" / "+deck.length;
+  $("fill").style.width=Math.round(((idx+1)/deck.length)*100)+"%";
+}
+function move(d){
+  idx=(idx+d+deck.length)%deck.length;
+  stage.classList.remove("flipped");
+  render();
+  $("cardwrap").querySelector(".face.back").scrollTop=0;
+}
+$("cardwrap").addEventListener("click",()=>stage.classList.toggle("flipped"));
+$("cardwrap").addEventListener("keydown",e=>{
+  if(e.key==="Enter"||e.key===" "){e.preventDefault();stage.classList.toggle("flipped");}
+});
+$("next").addEventListener("click",()=>move(1));
+$("prev").addEventListener("click",()=>move(-1));
+$("shuffle").addEventListener("click",()=>{
+  for(let i=deck.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [deck[i],deck[j]]=[deck[j],deck[i]];
+  }
+  idx=0;stage.classList.remove("flipped");render();
+});
+$("fAll").addEventListener("click",e=>setFilter("all",e.currentTarget));
+$("fB").addEventListener("click",e=>setFilter("b",e.currentTarget));
+$("fC").addEventListener("click",e=>setFilter("c",e.currentTarget));
+$("fL").addEventListener("click",e=>setFilter("l",e.currentTarget));
+document.addEventListener("keydown",e=>{
+  if(e.target.tagName==="BUTTON")return;
+  if(e.key==="ArrowRight")move(1);
+  if(e.key==="ArrowLeft")move(-1);
+});
+render();
+</script>
+</body>
+</html>
